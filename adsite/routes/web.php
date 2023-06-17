@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdvertisementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('home');
 });
+
+Route::get('/ads', [AdvertisementController::class, 'index']);
+
+Route::get('/ads/category/{category_name}', [AdvertisementController::class, 'listByCategory']);
+
+Route::get('/ads/{id}', [AdvertisementController::class, 'show'])->name('advertisements.show');
