@@ -25,31 +25,4 @@ class AdvertisementController extends Controller
         $advertisement = Advertisement::findOrFail($id);
         return view('advertisements.show', ['advertisement' => $advertisement]);
     }
-
-    public function create(){
-        $categories = Category::all();
-        return view('advertisements.create', ['categories' => $categories]);
-    }
-
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'title' => 'required',
-            'price' => 'required|numeric',
-            'category_id' => 'required|exists:categories,id',
-            'description' => 'required',
-        ]);
-
-        $advertisement = Advertisement::create([
-            'title' => $validatedData['title'],
-            'price' => $validatedData['price'],
-            'category_id' => $validatedData['category_id'],
-            'description' => $validatedData['description'],
-            'seller_id' => 1, // Placeholder for now, fix when auth enabled
-        ]);
-
-        // Perform any additional actions or redirects as needed
-
-        return redirect()->route('advertisements.show', $advertisement->id);
-    }
 }
