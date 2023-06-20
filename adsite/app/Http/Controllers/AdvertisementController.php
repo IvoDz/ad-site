@@ -10,14 +10,14 @@ class AdvertisementController extends Controller
         public function index()
     {
         $advertisements = Advertisement::all();
-        return view('advertisements.index', ['advertisements' => $advertisements]);
+        return view('advertisements.index', ['advertisements' => $advertisements, 'msg' => "All advertisements"]);
     }
 
     public function listByCategory($category_name)
     {
         $category = Category::where('name', $category_name)->first();
         $advertisements = $category->advertisements ?? [];
-        return view('advertisements.index', ['advertisements' => $advertisements]);
+        return view('advertisements.index', ['advertisements' => $advertisements, 'msg' => "Category - " . $category_name]);
     }
 
     public function show($id)
