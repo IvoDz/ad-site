@@ -10,3 +10,7 @@
 <p><a href="{{ route('advertisements.index') }}">Browse All Ads</a></p>
 
 <p><a href="{{ route('advertisements.create')}}"> Create New Ad</a></p>
+
+<p> <a href="{{route('register')}}">Register</a></p>
+<p> <a href="{{route('login')}}">Login</a></p>
+
