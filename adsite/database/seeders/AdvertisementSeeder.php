@@ -10,7 +10,7 @@ class AdvertisementSeeder extends Seeder
     public function run()
     {
         $categories = Category::all();
-        $userCount = 10; // Assuming you have 10 dummy users
+        $userCount = 10; 
 
         foreach ($categories as $category) {
             for ($i = 1; $i <= 5; $i++) {
