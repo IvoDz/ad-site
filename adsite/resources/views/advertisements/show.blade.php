@@ -4,4 +4,4 @@
 <!-- Display other advertisement details -->
 <p>Description: {{ $advertisement->description }}</p>
 <!-- Display additional details as needed -->
-<p>Seller: {{ $advertisement->seller_id }}</p>
+<p>Seller: {{ $advertisement->seller->name}}</p>

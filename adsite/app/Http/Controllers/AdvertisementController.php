@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Advertisement;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class AdvertisementController extends Controller
     {
@@ -45,9 +47,12 @@ class AdvertisementController extends Controller
             'price' => $validatedData['price'],
             'category_id' => $validatedData['category_id'],
             'description' => $validatedData['description'],
-            'seller_id' => 1, // Placeholder for now, fix when auth enabled
+            'seller_id' => Auth::id(),
         ]);
 
+        $user = User::find(Auth::id());
+        $user->increment('amountlisted');
+        $user->refresh();
         // Perform any additional actions or redirects as needed
 
         return redirect()->route('advertisements.show', $advertisement->id);
