@@ -42,4 +42,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function profilePicture()
+   {
+    return $this->belongsTo(File::class, 'profile_pic');
+   }
 }
