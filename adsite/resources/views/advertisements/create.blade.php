@@ -4,7 +4,7 @@
     <div class="container mx-auto mt-10">
         <h1 class="text-center text-4xl font-bold mb-6">Creating New Advertisement</h1>
 
-        <form action="{{ route('advertisements.store') }}" method="POST" class="max-w-md mx-auto">
+        <form action="{{ route('advertisements.store') }}" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto">
             @csrf
 
             <div class="mb-4">
@@ -30,6 +30,11 @@
             <div class="mb-4">
                 <label for="description" class="text-lg font-medium">Description</label>
                 <textarea name="description" id="description" rows="4" required class="w-full border border-gray-300 px-4 py-2 rounded-md"></textarea>
+            </div>
+
+            <div class="mb-4">
+                <label for="picture" class="text-lg font-medium">Picture</label>
+                <input type="file" name="picture" id="picture" accept="image/*" required class="w-full border border-gray-300 px-4 py-2 rounded-md">
             </div>
 
             <button type="submit" class="bg-laravel text-white py-2 px-4 rounded-md">Create Advertisement</button>
