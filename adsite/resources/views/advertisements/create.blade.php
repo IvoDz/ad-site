@@ -1,43 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Add new ad</title>
-</head>
-<body>
-    <h1>Creating new advertisement</h1>
+@extends('layout')
 
-    <form action="{{ route('advertisements.store') }}" method="POST">
-        @csrf
+@section('content')
+    <div class="container mx-auto mt-10">
+        <h1 class="text-center text-4xl font-bold mb-6">Creating New Advertisement</h1>
 
-        <div>
-            <label for="title">Title</label>
-            <input type="text" name="title" id="title" required>
-        </div>
+        <form action="{{ route('advertisements.store') }}" method="POST" class="max-w-md mx-auto">
+            @csrf
 
-        <div>
-            <label for="price">Price</label>
-            <input type="number" name="price" id="price" step="0.01" required>
-        </div>
+            <div class="mb-4">
+                <label for="title" class="text-lg font-medium">Title</label>
+                <input type="text" name="title" id="title" required class="w-full border border-gray-300 px-4 py-2 rounded-md">
+            </div>
 
-        <div>
-            <label for="category">Category</label>
-            <select name="category_id" id="category" required>
-                <option value="">Select a category</option>
-                @foreach ($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                @endforeach
-            </select>
-        </div>
+            <div class="mb-4">
+                <label for="price" class="text-lg font-medium">Price</label>
+                <input type="number" name="price" id="price" step="0.01" required class="w-full border border-gray-300 px-4 py-2 rounded-md">
+            </div>
 
-        <div>
-            <label for="description">Description</label>
-            <textarea name="description" id="description" rows="4" required></textarea>
-        </div>
+            <div class="mb-4">
+                <label for="category" class="text-lg font-medium">Category</label>
+                <select name="category_id" id="category" required class="w-full border border-gray-300 px-4 py-2 rounded-md">
+                    <option value="">Select a category</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
 
-        <button type="submit">Create Advertisement</button>
-    </form>
-</body>
-</html>
+            <div class="mb-4">
+                <label for="description" class="text-lg font-medium">Description</label>
+                <textarea name="description" id="description" rows="4" required class="w-full border border-gray-300 px-4 py-2 rounded-md"></textarea>
+            </div>
+
+            <button type="submit" class="bg-laravel text-white py-2 px-4 rounded-md">Create Advertisement</button>
+        </form>
+    </div>
+@endsection
