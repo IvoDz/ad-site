@@ -2,8 +2,8 @@
 
 @section('content')
 
-
 <h1 class="text-center text-4xl font-bold"> {{$msg}} </h1>
+
 <div class="lg:grid lg:grid-cols-2 gap-4 space-y-4 md:space-y-0 mx-4">
     @foreach ($advertisements as $advertisement)
     <div class="bg-gray-50 border border-gray-200 rounded p-6 grid grid-cols-2">
@@ -16,7 +16,13 @@
                 <i class="fa-solid fa-location-dot"></i>
             </div>
         </div>
-        <img class="hidden w-48 ml-auto md:block" src="{{ asset('images/logo.png') }}" alt="">
+
+        @if ($advertisement->pic)
+            <img class="w-48 ml-auto md:block" src="{{ asset('storage/images/' . $advertisement->pic . '.png') }}" alt="Advertisement Picture">
+        @else
+            <img class="w-48 ml-auto md:block" src="{{ asset('images/logo.png') }}" alt="Placeholder Image">
+        @endif
+
     </div>
     @endforeach
 </div>

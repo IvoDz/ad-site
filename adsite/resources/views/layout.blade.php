@@ -12,6 +12,7 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery.js/dist/css/lightgallery.min.css">
         <script src="https://cdn.tailwindcss.com"></script>
         <script>
             tailwind.config = {
@@ -24,6 +25,7 @@
                 },
             };
         </script>
+
         <title>Adsite</title>
     </head>
     <body class="mb-48">
@@ -64,5 +66,6 @@
         <main>
     @yield('content')
         </main>
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery.js/dist/js/lightgallery.min.js"></script>
 </body>
 </html>
