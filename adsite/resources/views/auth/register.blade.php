@@ -1,52 +1,38 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+@extends('layout')
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
-        </div>
+@section('content')
+    <div class="container mx-auto mt-10">
+        <h1 class="text-center text-4xl font-bold mb-6">Register</h1>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+        <form method="POST" action="{{ route('register') }}" class="max-w-md mx-auto" enctype="multipart/form-data">
+            @csrf
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            <div class="mb-4">
+                <label for="name" class="text-lg font-medium">Name</label>
+                <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus class="w-full border border-gray-300 px-4 py-2 rounded-md">
+            </div>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+            <div class="mb-4">
+                <label for="email" class="text-lg font-medium">Email</label>
+                <input id="email" type="email" name="email" value="{{ old('email') }}" required class="w-full border border-gray-300 px-4 py-2 rounded-md">
+            </div>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+            <div class="mb-4">
+                <label for="password" class="text-lg font-medium">Password</label>
+                <input id="password" type="password" name="password" required class="w-full border border-gray-300 px-4 py-2 rounded-md">
+            </div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            <div class="mb-4">
+                <label for="password_confirmation" class="text-lg font-medium">Confirm Password</label>
+                <input id="password_confirmation" type="password" name="password_confirmation" required class="w-full border border-gray-300 px-4 py-2 rounded-md">
+            </div>
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
+            <div class="mb-4">
+                <label for="profile_picture" class="text-lg font-medium">Profile Picture</label>
+                <input type="file" name="profile_picture" id="profile_picture" accept="image/*" required class="w-full border border-gray-300 px-4 py-2 rounded-md">
+            </div>
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ml-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+            <button type="submit" class="bg-laravel text-white py-2 px-4 rounded-md">Register</button>
+        </form>
+    </div>
+@endsection

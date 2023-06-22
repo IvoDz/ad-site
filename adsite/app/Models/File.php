@@ -8,6 +8,9 @@ use App\Models\Advertisement;
 
 class File extends Model
 {
+
+    protected $fillable = ['path', 'type'];
+
     public function advertisement()
 {
     return $this->hasOne(Advertisement::class, 'pic');

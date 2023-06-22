@@ -18,7 +18,7 @@
         </div>
 
         @if ($advertisement->pic)
-            <img class="w-48 ml-auto md:block" src="{{ asset('storage/images/' . $advertisement->pic . '.png') }}" alt="Advertisement Picture">
+            <img class="w-48 ml-auto md:block" src="{{ asset('storage/images/' . $advertisement->pic . '.' . $advertisement->file->type) }}" alt="Advertisement Picture">
         @else
             <img class="w-48 ml-auto md:block" src="{{ asset('images/logo.png') }}" alt="Placeholder Image">
         @endif

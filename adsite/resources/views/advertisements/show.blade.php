@@ -11,8 +11,8 @@
             @if($advertisement->pic)
                 <div class="my-6 grid grid-cols-2 gap-4">
                     <div>
-                        <a href="{{ asset('storage/images/' . $advertisement->pic . '.png') }}" class="lightbox">
-                            <img src="{{ asset('storage/images/' . $advertisement->pic . '_thumbnail.png') }}" alt="Advertisement Picture" class="w-full h-auto max-h-64 object-cover rounded-lg">
+                        <a href="{{ asset('storage/images/' . $advertisement->pic . '.' . $advertisement->file->type) }}" class="lightbox">
+                            <img src="{{ asset('storage/images/' . $advertisement->pic . '.' . $advertisement->file->type) }}" alt="Advertisement Picture" class="w-full h-auto max-h-64 object-cover rounded-lg">
                         </a>
                     </div>
                     <!-- Add more image containers as needed -->
