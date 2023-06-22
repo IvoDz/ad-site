@@ -31,9 +31,10 @@ Route::get('/ads/category/{category_name}', [AdvertisementController::class, 'li
 
 Route::get('/ads/{id}', [AdvertisementController::class, 'show'])->name('advertisements.show');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/dashboard', [AdvertisementController::class, 'dashboard'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 
 require __DIR__.'/auth.php';

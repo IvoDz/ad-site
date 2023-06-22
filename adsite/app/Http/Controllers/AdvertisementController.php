@@ -51,10 +51,16 @@ class AdvertisementController extends Controller
         ]);
 
         $file = new File();
-        $file->path = $request->file('picture')->store('public/images');
         $file->type = $request->file('picture')->getClientOriginalExtension();
+        $file->path = $request->file('picture')->store('public/images/'. $file->id . '.' . $file->type);
         $file->save();
 
+        // Resize and store the image
+        //$imagePath = storage_path('app/' . $file->path);
+        //$resizedImagePath = 'public/images/' . $file->id . '.' . $file->type;
+        //$image = Image::make($imagePath);
+        //$image->save(storage_path('app/' . $resizedImagePath));
+        
         $advertisement = Advertisement::create([
                     'title' => $validatedData['title'],
                     'price' => $validatedData['price'],
@@ -63,16 +69,21 @@ class AdvertisementController extends Controller
                     'seller_id' => Auth::id(),
                     'pic' => $file->id,
                 ]);
-        // Resize and store the image
-        $imagePath = storage_path('app/' . $file->path);
-        $resizedImagePath = 'public/images/' . $file->id . '.' . $file->type;
-        $image = Image::make($imagePath);
-        $image->save(storage_path('app/' . $resizedImagePath));
+
 
         $user = User::find(Auth::id());
         $user->increment('amountlisted');
         $user->refresh();
 
         return redirect()->route('advertisements.show', $advertisement->id);
+    }
+
+
+    public function dashboard()
+    {
+        $user = User::find(Auth::id());
+        $advertisements = Advertisement::all();;
+
+        return view('dashboard', ['user' => $user, 'advertisements' => $advertisements]);
     }
 }
