@@ -60,7 +60,7 @@ class AdvertisementController extends Controller
         //$resizedImagePath = 'public/images/' . $file->id . '.' . $file->type;
         //$image = Image::make($imagePath);
         //$image->save(storage_path('app/' . $resizedImagePath));
-        
+
         $advertisement = Advertisement::create([
                     'title' => $validatedData['title'],
                     'price' => $validatedData['price'],
@@ -85,5 +85,15 @@ class AdvertisementController extends Controller
         $advertisements = Advertisement::all();;
 
         return view('dashboard', ['user' => $user, 'advertisements' => $advertisements]);
+    }
+
+    public function destroy(int $id){
+    {
+        $ad = Advertisement::where('id', $id)->firstOrFail();
+        $adname = $ad->title;
+        $ad->delete();
+
+        return redirect()->route('/dashboard')->with('success_message', "Ad \"$adname\" was deleted successfully!");
+    }
     }
 }

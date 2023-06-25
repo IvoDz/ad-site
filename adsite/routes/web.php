@@ -22,6 +22,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/ads/create', [AdvertisementController::class, 'create'])->name('advertisements.create');
+    Route::get('/dashboard', [AdvertisementController::class, 'dashboard'])->name('dashboard');
+    Route::delete('/ad/{id}/delete', [AdvertisementController::class, 'destroy'])->name('adverisement.delete');
 });
 
 Route::post('/ads', [AdvertisementController::class, 'store'])->name('advertisements.store');
@@ -30,11 +32,6 @@ Route::get('/ads/category/{category_name}', [AdvertisementController::class, 'li
 
 
 Route::get('/ads/{id}', [AdvertisementController::class, 'show'])->name('advertisements.show');
-
-
-Route::get('/dashboard', [AdvertisementController::class, 'dashboard'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
 
 
 require __DIR__.'/auth.php';
