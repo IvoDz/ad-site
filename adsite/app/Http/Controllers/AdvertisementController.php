@@ -82,18 +82,55 @@ class AdvertisementController extends Controller
     public function dashboard()
     {
         $user = User::find(Auth::id());
-        $advertisements = Advertisement::all();;
+        $advertisements = Advertisement::where('seller_id', $user->id)->get();
 
         return view('dashboard', ['user' => $user, 'advertisements' => $advertisements]);
     }
 
     public function destroy(int $id){
-    {
         $ad = Advertisement::where('id', $id)->firstOrFail();
         $adname = $ad->title;
         $ad->delete();
 
-        return redirect()->route('/dashboard')->with('success_message', "Ad \"$adname\" was deleted successfully!");
+        return redirect()->route('dashboard')->with('success_message', "Ad \"$adname\" was deleted successfully!");
     }
+
+
+    public function update(Request $request, int $id)
+    {
+    $advertisement = Advertisement::findOrFail($id);
+
+    // Validate the form data
+    $validatedData = $request->validate([
+        'title' => 'required',
+        'price' => 'required|numeric',
+        'category_id' => 'required',
+        'description' => 'required',
+        'picture' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+    // Update the advertisement with the new data
+    $advertisement->title = $validatedData['title'];
+    $advertisement->price = $validatedData['price'];
+    $advertisement->category_id = $validatedData['category_id'];
+    $advertisement->description = $validatedData['description'];
+
+    // Save the updated advertisement
+    $advertisement->save();
+
+    return redirect()->route('dashboard')->with('success_message', "Ad \"$advertisement->title\" was edited successfully!");
+    }
+
+
+    public function edit(int $id)
+    {
+        $advertisement = Advertisement::findOrFail($id);
+
+        if ($advertisement->seller_id !== auth()->id()) {
+            return response()->view('error.forbidden', [], 403); // Return a 403 Forbidden response if the user is not authorized
+        }
+        $categories = Category::all();
+        $adCategory = Category::where('id', $advertisement->category_id)->firstOrFail();
+        return view('advertisements.edit', ['advertisement' => $advertisement, 'categories' => $categories, 'categoryname' => $adCategory]);
     }
 }
