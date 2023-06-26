@@ -6,8 +6,27 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [CategoryController::class, 'index'])->name('mainpage');
+// Banned Users
+Route::group(['middleware' => 'banned'], function () {
+    Route::get('/', function () {
+        return view('banned');
+    })->name('banned');
+});
 
+// Admins
+Route::group(['middleware' => ['auth', 'is_admin'], 'prefix' => 'admin'], function () {
+    Route::get('/', function () {
+        return view('admin.adminpage');
+    })->name('admin.adminpage');
+
+    Route::get('/ads', [AdminController::class, 'indexAds'])->name('admin.ads');
+    Route::get('/categories', [AdminController::class, 'indexCategories'])->name('admin.categories');
+    Route::get('/users', [AdminController::class, 'indexUsers'])->name('admin.users');
+    Route::get('/users/search', [AdminController::class, 'searchUsers'])->name('admin.users.search');
+    Route::get('/users/{id}/ban', [AdminController::class, 'banUser'])->name('admin.userban');
+});
+
+// Logged In Users
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -20,23 +39,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/ad/{id}', [AdvertisementController::class, 'update'])->name('advertisements.update');
 });
 
-Route::group(['middleware' => 'is_admin', 'prefix' => 'admin'], function () {
-    Route::get('/', function () {
-        return view('admin.adminpage');
-    })->name('admin.adminpage');
-
-    Route::get('/ads', [AdminController::class, 'indexAds'])->name('admin.ads');
-    Route::get('/categories', [AdminController::class, 'indexCategories'])->name('admin.categories');
-    Route::get('/users', [AdminController::class, 'indexUsers'])->name('admin.users');
-    Route::get('/users/search', [AdminController::class, 'searchUsers'])->name('admin.users.search');
-
-
-});
-
-
+// Guest Users
+Route::get('/', [CategoryController::class, 'index'])->name('mainpage');
 Route::get('/ads', [AdvertisementController::class, 'index'])->name('advertisements.index');
 Route::get('/ads/category/{category_name}', [AdvertisementController::class, 'listByCategory'])->name('advertisements.listByCategory');
 Route::get('/ads/{id}', [AdvertisementController::class, 'show'])->name('advertisements.show');
-
 
 require __DIR__.'/auth.php';

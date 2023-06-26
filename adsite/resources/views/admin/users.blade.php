@@ -10,6 +10,12 @@
         </form>
     </div>
 
+    @if(session('success_message'))
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+        <span class="block sm:inline">{{ session('success_message') }}</span>
+    </div>
+    @endif
+
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
         @foreach ($users as $user)
             <div class="bg-gray-50 border border-gray-200 rounded p-6">
@@ -25,8 +31,8 @@
                     </div>
                 </div>
                 <div class="flex">
-                    <form action="#" method="POST">
-                        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Delete User</button>
+                    <form action="{{route('admin.userban' ,  ['id' => $user->id])}}" method="GET">
+                        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Ban User</button>
                     </form>
                     <a href="#" class="bg-green-500 text-white px-4 py-2 rounded ml-4 hover:bg-green-600">View Listings</a>
                 </div>

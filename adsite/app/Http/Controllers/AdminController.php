@@ -49,13 +49,14 @@ class AdminController extends Controller
     /**
      * Display the specified resource.
      */
-    public function destroyUser(int $id)
+    public function banUser(int $id)
     {
         $user = User::where('id', $id)->firstOrFail();
         $name = $user->name;
-        $user->delete();
+        $user->is_banned = true;
+        $user->save();
 
-        return redirect()->route('advertisements.destroy')->with('success_message', "Ad \"$name \" was deleted successfully!");
+        return redirect()->route('admin.users')->with('success_message', "User \"$name \" was banned successfully!");
     }
 
 
