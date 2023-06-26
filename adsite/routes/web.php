@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [CategoryController::class, 'index'])->name('mainpage');
@@ -19,10 +20,17 @@ Route::middleware('auth')->group(function () {
     Route::post('/ad/{id}', [AdvertisementController::class, 'update'])->name('advertisements.update');
 });
 
-Route::group(['middleware' => 'is_admin'], function () {
-    Route::get('/adminpage', function () {
+Route::group(['middleware' => 'is_admin', 'prefix' => 'admin'], function () {
+    Route::get('/', function () {
         return view('admin.adminpage');
     })->name('admin.adminpage');
+
+    Route::get('/ads', [AdminController::class, 'indexAds'])->name('admin.ads');
+    Route::get('/categories', [AdminController::class, 'indexCategories'])->name('admin.categories');
+    Route::get('/users', [AdminController::class, 'indexUsers'])->name('admin.users');
+    Route::get('/users/search', [AdminController::class, 'searchUsers'])->name('admin.users.search');
+
+
 });
 
 
