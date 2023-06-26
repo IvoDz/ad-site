@@ -29,7 +29,7 @@
 
             <div class="mb-4">
                 <label for="profile_picture" class="text-lg font-medium">Profile Picture</label>
-                <input type="file" name="profile_picture" id="profile_picture" accept="image/*" required class="w-full border border-gray-300 px-4 py-2 rounded-md">
+                <input type="file" name="profile_picture" id="profile_picture" accept="image/*" class="w-full border border-gray-300 px-4 py-2 rounded-md">
             </div>
 
             <button type="submit" class="bg-laravel text-white py-2 px-4 rounded-md">Register</button>
