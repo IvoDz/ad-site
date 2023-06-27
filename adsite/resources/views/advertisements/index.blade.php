@@ -15,9 +15,6 @@
                 <a href="{{ route('advertisements.show', $advertisement->id) }}">{{ $advertisement->title }}</a>
             </h3>
             <div class="text-xl font-bold mb-4">{{ $advertisement->price }}</div>
-            <div class="text-lg mt-4">
-                <i class="fa-solid fa-location-dot"></i>
-            </div>
         </div>
 
         @if ($advertisement->pic)

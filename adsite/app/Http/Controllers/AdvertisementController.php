@@ -17,8 +17,13 @@ class AdvertisementController extends Controller
     public function index(Request $request)
     {
         $filter = $request->input('filter');
+        $search = $request->input('search');
 
         $query = DB::table('advertisements');
+
+        if ($search) {
+            $query->where('title', 'like', "%$search%");
+        }
 
         if ($filter === 'price_asc') {
             $query->orderBy('price', 'asc');
@@ -37,7 +42,6 @@ class AdvertisementController extends Controller
             'msg' => "All advertisements",
         ]);
     }
-
     public function listByCategory($category_name)
     {
         $category = Category::where('name', $category_name)->first();

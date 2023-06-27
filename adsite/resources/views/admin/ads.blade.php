@@ -9,6 +9,10 @@
     </div>
     @endif
 
+
+    @component('components.admin-ads-filter')
+    @endcomponent
+
     <div class="lg:grid lg:grid-cols-2 gap-4 space-y-4 md:space-y-0 mx-4">
         @foreach ($advertisements as $advertisement)
             <div class="bg-gray-50 border border-gray-200 rounded p-6 grid grid-cols-2">

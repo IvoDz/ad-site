@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\File;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 
@@ -31,10 +32,32 @@ class AdminController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function indexAds()
+    public function indexAds(Request $request)
     {
-        $advertisements = Advertisement::all();
-        return view('admin.ads', ['advertisements' => $advertisements]);
+        $filter = $request->input('filter');
+        $search = $request->input('search');
+
+        $query = DB::table('advertisements');
+
+        if ($search) {
+            $query->where('title', 'like', "%$search%");
+        }
+
+        if ($filter === 'price_asc') {
+            $query->orderBy('price', 'asc');
+        } elseif ($filter === 'price_desc') {
+            $query->orderBy('price', 'desc');
+        } elseif ($filter === 'name_asc') {
+            $query->orderBy('title', 'asc');
+        } elseif ($filter === 'name_desc') {
+            $query->orderBy('title', 'desc');
+        }
+
+        $advertisements = $query->get();
+
+        return view('admin.ads', [
+            'advertisements' => $advertisements,
+        ]);
     }
 
     /**
