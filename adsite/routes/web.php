@@ -4,8 +4,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\LocalizationController;
 use Illuminate\Support\Facades\Route;
 
+
+Route::get('/setLocale/{locale}', [LocalizationController::class, 'setLocale'])->name('setLocale');
 // Banned Users
 Route::middleware(['auth', 'banned'])->group(function () {
     Route::get('/banned', function () {

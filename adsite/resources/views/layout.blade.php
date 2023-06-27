@@ -23,37 +23,51 @@
     <title>Adsite</title>
 </head>
 <body class="mb-48">
-    <nav class="flex justify-between items-center mb-4">
-        <a href="{{ route('mainpage') }}">
-            <img class="w-24" src="{{ asset('images/logo.png') }}" alt="Logo" class="logo">
-        </a>
-        <ul class="flex space-x-6 mr-6 text-lg">
+    <nav class="flex justify-between items-center mb-4 py-4 bg-stone-200"> <!-- Updated: Added "py-4" and "bg-blue-200" classes -->
+        <ul class="flex space-x-6 mr-auto text-lg"> <!-- Updated: Added "mr-auto" class -->
             @guest
                 <li>
-                    <a href="{{ route('register') }}" class="hover:text-laravel">
+                    <a href="{{ route('register') }}" class="hover:text-laravel px-4"> <!-- Updated: Added "px-4" class -->
                         <i class="fa-solid fa-user-plus"></i> Register
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('login') }}" class="hover:text-laravel">
+                    <a href="{{ route('login') }}" class="hover:text-laravel px-4"> <!-- Updated: Added "px-4" class -->
                         <i class="fa-solid fa-arrow-right-to-bracket"></i> Login
                     </a>
                 </li>
             @else
-                <li>
-                    <a href="#" class="hover:text-laravel">
-                        <i class="fa-solid fa-user"></i> {{ Auth::user()->name }}
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('logout') }}" class="hover:text-laravel" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="fa-solid fa-sign-out"></i> Logout
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-                </li>
+            <li>
+                <a href="#" class="hover:text-laravel">
+                    <i class="fa-solid fa-user"></i> {{ Auth::user()->name }}
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('logout') }}" class="hover:text-laravel" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="fa-solid fa-sign-out"></i> Logout
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+            </li>
             @endguest
+        </ul>
+        <ul class="flex space-x-6 mr-6 text-lg">
+            <li>
+                <a href="{{ route('setLocale', ['locale' => 'en']) }}" class="hover:text-laravel">
+                    <img src="{{ asset('images/gb.png') }}" alt="gb_icon">
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('setLocale', ['locale' => 'lv']) }}" class="hover:text-laravel">
+                    <img src="{{ asset('images/lv.png') }}" alt="lv_icon">
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('setLocale', ['locale' => 'de']) }}" class="hover:text-laravel">
+                    <img src="{{ asset('images/ge.png') }}" alt="ge_icon">
+                </a>
+            </li>
         </ul>
     </nav>
 
