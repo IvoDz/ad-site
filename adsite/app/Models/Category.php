@@ -9,6 +9,8 @@ class Category extends Model
 {
     use HasFactory;
 
+    public $fillable = ['name'];
+
     public function advertisements()
     {
         return $this->hasMany(Advertisement::class);

@@ -31,10 +31,12 @@
                     </div>
                 </div>
                 <div class="flex">
+                    @if (!$user->is_admin)
                     <form action="{{route('admin.userban' ,  ['id' => $user->id])}}" method="GET">
                         <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Ban User</button>
                     </form>
-                    <a href="#" class="bg-green-500 text-white px-4 py-2 rounded ml-4 hover:bg-green-600">View Listings</a>
+                    @endif
+                    <a href="{{route('admin.userads' ,  ['id' => $user->id])}}" class="bg-green-500 text-white px-4 py-2 rounded ml-4 hover:bg-green-600">View Listings</a>
                 </div>
             </div>
         @endforeach

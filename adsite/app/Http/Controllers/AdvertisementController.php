@@ -88,11 +88,28 @@ class AdvertisementController extends Controller
     }
 
     public function destroy(int $id){
-        $ad = Advertisement::where('id', $id)->firstOrFail();
+        $ad = Advertisement::findOrFail($id);
+        $seller = $ad->seller_id;
+
+        if ($seller !== auth()->id() && !auth()->user()->is_admin) {
+            return response()->view('error.forbidden', [], 403);
+        }
+
         $adname = $ad->title;
         $ad->delete();
 
-        return redirect()->route('dashboard')->with('success_message', "Ad \"$adname\" was deleted successfully!");
+        $user = User::where('id', $seller)->firstOrFail();
+        $user->decrement('amountlisted');
+        $user->refresh();
+
+        if ($seller === auth()->id()) {
+            return redirect()->route('dashboard')->with('success_message', "Ad \"$adname\" was deleted successfully!");
+        }
+
+        if (auth()->user()->is_admin){
+            return redirect()->route('admin.ads')->with('success_message', "Ad \"$adname\" was deleted successfully!");
+        }
+
     }
 
 
@@ -126,8 +143,8 @@ class AdvertisementController extends Controller
     {
         $advertisement = Advertisement::findOrFail($id);
 
-        if ($advertisement->seller_id !== auth()->id()) {
-            return response()->view('error.forbidden', [], 403); // Return a 403 Forbidden response if the user is not authorized
+        if ($advertisement->seller_id !== auth()->id() && !auth()->user()->is_admin) {
+            return response()->view('error.forbidden', [], 403);
         }
         $categories = Category::all();
         $adCategory = Category::where('id', $advertisement->category_id)->firstOrFail();

@@ -9,7 +9,9 @@ class IsBannedMiddleware
 {
     public function handle(Request $request, Closure $next)
 {
-        if (auth()->check() && auth()->user()->is_banned == 1 && !auth()->user()->is_admin)  {
+        $routeName = $request->route()->getName();
+
+        if (auth()->check() && auth()->user()->is_banned == 1 && !auth()->user()->is_admin &&  $routeName !== 'banned')  {
             return redirect()->route('banned');
         }
 

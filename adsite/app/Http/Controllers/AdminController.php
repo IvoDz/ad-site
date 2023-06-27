@@ -71,9 +71,11 @@ class AdminController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function indexUserAds(int $id)
     {
-        //
+        $user = User::where('id', $id)->firstOrFail();
+        $advertisements = Advertisement::where('seller_id', $id)->get();
+        return view('admin.userads', ['advertisements' => $advertisements, 'msg' => "All listings by " . $user->name]);
     }
 
     /**

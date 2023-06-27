@@ -21,7 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'profile_pic'
+        'profile_pic',
+        'is_admin',
+        'is_banned'
     ];
 
     /**
@@ -48,4 +50,9 @@ class User extends Authenticatable
    {
     return $this->belongsTo(File::class, 'profile_pic');
    }
+
+   public function advertisements()
+    {
+        return $this->hasMany(Advertisement::class);
+    }
 }
