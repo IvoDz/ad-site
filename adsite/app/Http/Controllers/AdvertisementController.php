@@ -10,20 +10,39 @@ use App\Models\File;
 use Illuminate\Validation\Rule;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class AdvertisementController extends Controller
+{
+    public function index(Request $request)
     {
-        public function index()
-    {
-        $advertisements = Advertisement::all();
-        return view('advertisements.index', ['advertisements' => $advertisements, 'msg' => "All advertisements"]);
+        $filter = $request->input('filter');
+
+        $query = DB::table('advertisements');
+
+        if ($filter === 'price_asc') {
+            $query->orderBy('price', 'asc');
+        } elseif ($filter === 'price_desc') {
+            $query->orderBy('price', 'desc');
+        } elseif ($filter === 'name_asc') {
+            $query->orderBy('title', 'asc');
+        } elseif ($filter === 'name_desc') {
+            $query->orderBy('title', 'desc');
+        }
+
+        $advertisements = $query->get();
+
+        return view('advertisements.index', [
+            'advertisements' => $advertisements,
+            'msg' => "All advertisements",
+        ]);
     }
 
     public function listByCategory($category_name)
     {
         $category = Category::where('name', $category_name)->first();
         $advertisements = $category->advertisements ?? [];
-        return view('advertisements.index', ['advertisements' => $advertisements, 'msg' => "Category - " . $category_name]);
+        return view('advertisements.index', ['advertisements' => $advertisements, 'msg' => 'Category - ' . $category_name]);
     }
 
     public function show($id)
@@ -32,7 +51,8 @@ class AdvertisementController extends Controller
         return view('advertisements.show', ['advertisement' => $advertisement]);
     }
 
-    public function create(){
+    public function create()
+    {
         $categories = Category::all();
         return view('advertisements.create', ['categories' => $categories]);
     }
@@ -52,7 +72,7 @@ class AdvertisementController extends Controller
 
         $file = new File();
         $file->type = $request->file('picture')->getClientOriginalExtension();
-        $file->path = $request->file('picture')->store('public/images/'. $file->id . '.' . $file->type);
+        $file->path = $request->file('picture')->store('public/images/' . $file->id . '.' . $file->type);
         $file->save();
 
         // Resize and store the image
@@ -62,14 +82,13 @@ class AdvertisementController extends Controller
         //$image->save(storage_path('app/' . $resizedImagePath));
 
         $advertisement = Advertisement::create([
-                    'title' => $validatedData['title'],
-                    'price' => $validatedData['price'],
-                    'category_id' => $validatedData['category_id'],
-                    'description' => $validatedData['description'],
-                    'seller_id' => Auth::id(),
-                    'pic' => $file->id,
-                ]);
-
+            'title' => $validatedData['title'],
+            'price' => $validatedData['price'],
+            'category_id' => $validatedData['category_id'],
+            'description' => $validatedData['description'],
+            'seller_id' => Auth::id(),
+            'pic' => $file->id,
+        ]);
 
         $user = User::find(Auth::id());
         $user->increment('amountlisted');
@@ -77,7 +96,6 @@ class AdvertisementController extends Controller
 
         return redirect()->route('advertisements.show', $advertisement->id);
     }
-
 
     public function dashboard()
     {
@@ -87,7 +105,8 @@ class AdvertisementController extends Controller
         return view('dashboard', ['user' => $user, 'advertisements' => $advertisements]);
     }
 
-    public function destroy(int $id){
+    public function destroy(int $id)
+    {
         $ad = Advertisement::findOrFail($id);
         $seller = $ad->seller_id;
 
@@ -103,41 +122,44 @@ class AdvertisementController extends Controller
         $user->refresh();
 
         if ($seller === auth()->id()) {
-            return redirect()->route('dashboard')->with('success_message', "Ad \"$adname\" was deleted successfully!");
+            return redirect()
+                ->route('dashboard')
+                ->with('success_message', "Ad \"$adname\" was deleted successfully!");
         }
 
-        if (auth()->user()->is_admin){
-            return redirect()->route('admin.ads')->with('success_message', "Ad \"$adname\" was deleted successfully!");
+        if (auth()->user()->is_admin) {
+            return redirect()
+                ->route('admin.ads')
+                ->with('success_message', "Ad \"$adname\" was deleted successfully!");
         }
-
     }
-
 
     public function update(Request $request, int $id)
     {
-    $advertisement = Advertisement::findOrFail($id);
+        $advertisement = Advertisement::findOrFail($id);
 
-    // Validate the form data
-    $validatedData = $request->validate([
-        'title' => 'required',
-        'price' => 'required|numeric',
-        'category_id' => 'required',
-        'description' => 'required',
-        'picture' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
+        // Validate the form data
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'price' => 'required|numeric',
+            'category_id' => 'required',
+            'description' => 'required',
+            'picture' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-    // Update the advertisement with the new data
-    $advertisement->title = $validatedData['title'];
-    $advertisement->price = $validatedData['price'];
-    $advertisement->category_id = $validatedData['category_id'];
-    $advertisement->description = $validatedData['description'];
+        // Update the advertisement with the new data
+        $advertisement->title = $validatedData['title'];
+        $advertisement->price = $validatedData['price'];
+        $advertisement->category_id = $validatedData['category_id'];
+        $advertisement->description = $validatedData['description'];
 
-    // Save the updated advertisement
-    $advertisement->save();
+        // Save the updated advertisement
+        $advertisement->save();
 
-    return redirect()->route('dashboard')->with('success_message', "Ad \"$advertisement->title\" was edited successfully!");
+        return redirect()
+            ->route('dashboard')
+            ->with('success_message', "Ad \"$advertisement->title\" was edited successfully!");
     }
-
 
     public function edit(int $id)
     {
