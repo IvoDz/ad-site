@@ -5,25 +5,20 @@
         <div class="bg-white shadow-md rounded-lg p-6">
             <!-- Display advertisement details -->
             <h2 class="text-3xl font-bold mb-4">{{ $advertisement->title }}</h2>
-            <p class="text-lg">Price: ${{ $advertisement->price }}</p>
+            <p class="text-lg">{{__('messages.price')}}{{ $advertisement->price }}</p>
 
             <!-- Display picture if available -->
-            @if($advertisement->pic)
-                <div class="my-6 grid grid-cols-2 gap-4">
-                    <div>
-                        <a href="{{ asset('storage/images/' . $advertisement->pic . '.' . $advertisement->file->type) }}" class="lightbox">
-                            <img src="{{ asset('storage/images/' . $advertisement->pic . '.' . $advertisement->file->type) }}" alt="Advertisement Picture" class="w-full h-auto max-h-64 object-cover rounded-lg">
-                        </a>
-                    </div>
-                    <!-- Add more image containers as needed -->
-                </div>
-            @endif
+            @if ($advertisement->pic)
+            <img src="{{ asset('storage/' . $advertisement->file->path) }}" alt="Profile Picture"  class="h-auto max-w-lg rounded-lg">
+        @else
+        <img class="w-12 h-12" src="{{ asset('storage/no-photo.png') }}" alt="Default Profile Picture">
+        @endif
 
             <!-- Display other advertisement details -->
-            <p class="text-lg mt-4">Description: {{ $advertisement->description }}</p>
+            <p class="text-lg mt-4">{{__('messages.desc')}} : {{ $advertisement->description }}</p>
 
             <!-- Display additional details as needed -->
-            <p class="text-lg mt-4">Seller: {{ $advertisement->seller->name }}</p>
+            <p class="text-lg mt-4">{{__('messages.seller')}} {{ $advertisement->seller->name }}</p>
         </div>
     </div>
 

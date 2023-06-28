@@ -37,13 +37,13 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
 });
 
 // Other Routes
-Route::middleware(['auth', 'banned'])->group(function () {
+Route::middleware(['auth', 'active_user'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/ads/create', [AdvertisementController::class, 'create'])->name('advertisements.create');
     Route::get('/dashboard', [AdvertisementController::class, 'dashboard'])->name('dashboard');
-    Route::get('/ad/{id}/delete', [AdvertisementController::class, 'destroy'])->name('advertisements.destroy');
+    Route::delete('/ad/{id}/delete', [AdvertisementController::class, 'destroy'])->name('advertisements.destroy');
     Route::post('/ads', [AdvertisementController::class, 'store'])->name('advertisements.store');
     Route::get('/ad/{id}/edit', [AdvertisementController::class, 'edit'])->name('advertisements.edit');
     Route::post('/ad/{id}', [AdvertisementController::class, 'update'])->name('advertisements.update');
@@ -61,9 +61,11 @@ Route::get('/', function () {
     return app(CategoryController::class)->index();
 })->name('mainpage');
 
-// Advertisement Routes
+Route::middleware(['active_user'])->group(function () {
 Route::get('/ads', [AdvertisementController::class, 'index'])->name('advertisements.index');
 Route::get('/ads/category/{category_name}', [AdvertisementController::class, 'listByCategory'])->name('advertisements.listByCategory');
 Route::get('/ads/{id}', [AdvertisementController::class, 'show'])->name('advertisements.show');
+});
+
 
 require __DIR__.'/auth.php';

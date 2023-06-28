@@ -23,7 +23,7 @@
         @endforeach
             @else
                 <div class="flex justify-center mt-4">
-                    <p class="text-2xl font-bold mt-4 text-center">This user does not have any advertisements listed</p>
+                    <p class="text-2xl font-bold mt-4 text-center">{{__('messages.no_listed')}}</p>
                 </div>
             @endif
         </div>

@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('content')
-    <h1 class="text-center text-4xl font-bold">Browse/edit/delete all advertisements</h1>
+    <h1 class="text-center text-4xl font-bold">{{__('messages.ad_options')}}</h1>
 
     @if(session('success_message'))
     <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
@@ -24,20 +24,21 @@
                     <div class="text-xl font-bold mb-4">{{ $advertisement->created_at}}</div>
                 </div>
 
-                @if ($advertisement->pic)
-                    <img class="w-48 ml-auto md:block"
-                        src="{{ asset('storage/images/' . $advertisement->pic . '.' . $advertisement->file->type) }}"
-                        alt="Advertisement Picture">
-                @else
-                    <img class="w-48 ml-auto md:block" src="{{ asset('images/logo.png') }}"
-                        alt="Placeholder Image">
-                @endif
+                <div class="flex items-center justify-end">
+                    @if ($advertisement->pic)
+                    <div class="w-32 h-32 rounded-lg overflow-hidden">
+                        <img src="{{ asset('storage/' . $advertisement->file->path) }}" alt="Ad Pic" class="object-contain w-full h-full">
+                    </div>
+                    @else
+                    <img class="w-12 h-12" src="{{ asset('storage/no-photo.png') }}" alt="Default Ad Pic">
+                    @endif
+                </div>
 
                 <div class="flex justify-end mt-4">
                     <a href="{{ route('advertisements.edit', ['id' => $advertisement->id]) }}" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                        onclick="return confirm('Are you sure you want to edit this advertisement? Remember that it is listed by another user!')">Edit</a>
+                        onclick="return confirm('{{__('messages.ad_con_edit')}}')">{{__('messages.edit')}}</a>
                     <a href="{{ route('advertisements.destroy', ['id' => $advertisement->id]) }}" class="ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                        onclick="return confirm('Are you sure you want to delete this advertisement?  Remember that it is listed by another user!')">Delete</a>
+                        onclick="return confirm('{{__('messages.ad_con_del')}}')">{{__('messages.del')}}</a>
                 </div>
             </div>
         @endforeach

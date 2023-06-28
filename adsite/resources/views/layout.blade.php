@@ -22,29 +22,33 @@
 
     <title>Adsite</title>
 </head>
-<body class="mb-48">
-    <nav class="flex justify-between items-center mb-4 py-4 bg-stone-200"> <!-- Updated: Added "py-4" and "bg-blue-200" classes -->
-        <ul class="flex space-x-6 mr-auto text-lg"> <!-- Updated: Added "mr-auto" class -->
+<body >
+    <nav class="sticky top-0 flex justify-between items-center mb-6 bg-stone-200">
+        <a href="/" class="flex items-center"> <!-- Updated: Added "flex", "items-center", "space-x-2", and "ml-4" classes -->
+            <img src="{{ asset('storage/logo.png') }}" alt="Logo" class="w-16 h-16"> <!-- Updated: Added "w-8" and "h-8" classes -->
+        </a>
+
+        <ul class="flex space-x-6 mr-auto text-lg pl-3"> <!-- Updated: Added "mr-auto" class -->
             @guest
                 <li>
-                    <a href="{{ route('register') }}" class="hover:text-laravel px-4"> <!-- Updated: Added "px-4" class -->
-                        <i class="fa-solid fa-user-plus"></i> Register
+                    <a href="{{ route('register') }}" class="hover:text-laravel px-4">
+                        <i class="fa-solid fa-user-plus"></i> {{__('messages.register')}}
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('login') }}" class="hover:text-laravel px-4"> <!-- Updated: Added "px-4" class -->
-                        <i class="fa-solid fa-arrow-right-to-bracket"></i> Login
+                    <a href="{{ route('login') }}" class="hover:text-laravel px-4">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i> {{__('messages.login')}}
                     </a>
                 </li>
             @else
             <li>
-                <a href="#" class="hover:text-laravel">
+                <a href="{{route('dashboard')}}" class="hover:text-laravel">
                     <i class="fa-solid fa-user"></i> {{ Auth::user()->name }}
                 </a>
             </li>
             <li>
                 <a href="{{ route('logout') }}" class="hover:text-laravel" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <i class="fa-solid fa-sign-out"></i> Logout
+                    <i class="fa-solid fa-sign-out"></i> {{__('messages.logout')}}
                 </a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
