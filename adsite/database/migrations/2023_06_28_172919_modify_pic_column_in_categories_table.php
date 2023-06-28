@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_banned')->default(false);
-        });
+            Schema::table('categories', function (Blueprint $table) {
+                $table->unsignedBigInteger('pic')->nullable()->change();
+                $table->foreign('pic')->references('id')->on('files')->onDelete('set null');
+            });
     }
 
     /**
@@ -21,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('categories', function (Blueprint $table) {
             //
         });
     }

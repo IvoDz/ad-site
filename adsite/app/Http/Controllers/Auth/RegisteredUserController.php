@@ -15,6 +15,7 @@ use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
 
+
 class RegisteredUserController extends Controller
 {
     /**
@@ -47,11 +48,14 @@ class RegisteredUserController extends Controller
 
         if ($request->hasFile('profile_picture')) {
             $profilePicture = $request->file('profile_picture');
-            $path = $profilePicture->store('public/profile_pictures');
+            $path = $profilePicture->store('public');
+            $path = str_replace('public/', '', $path); // Remove 'public/' from the path
+
             $file = File::create([
                 'path' => $path,
                 'type' => $profilePicture->getClientOriginalExtension(),
             ]);
+
             $user->profile_pic = $file->id;
             $user->save();
         }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Advertisement;
 use App\Models\Category;
+use App\Models\File;
 
 use Illuminate\Http\Request;
 
@@ -21,8 +22,22 @@ class CategoryController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required',
+            'picture' => 'image|max:2048',
         ]);
 
+        $file = null; // Initialize the $file variable
+
+        if ($request->hasFile('picture'))
+        $pic = $request->file('picture');
+        $path = $pic->store('public');
+        $path = str_replace('public/', '', $path);
+
+        $file = File::create([
+            'path' => $path,
+            'type' => $pic->getClientOriginalExtension(),
+        ]);
+
+        $cat->pic = $file ? $file->id : null;
         $cat->name = $validatedData['name'];
         $cat->save();
 

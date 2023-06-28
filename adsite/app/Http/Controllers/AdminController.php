@@ -37,7 +37,7 @@ class AdminController extends Controller
         $filter = $request->input('filter');
         $search = $request->input('search');
 
-        $query = DB::table('advertisements');
+        $query = Advertisement::query();
 
         if ($search) {
             $query->where('title', 'like', "%$search%");
@@ -53,7 +53,8 @@ class AdminController extends Controller
             $query->orderBy('title', 'desc');
         }
 
-        $advertisements = $query->get();
+        $advertisements = $query->with('file')->get();
+
 
         return view('admin.ads', [
             'advertisements' => $advertisements,

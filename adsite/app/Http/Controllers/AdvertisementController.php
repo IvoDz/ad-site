@@ -14,34 +14,36 @@ use Illuminate\Support\Facades\DB;
 
 class AdvertisementController extends Controller
 {
-    public function index(Request $request)
-    {
-        $filter = $request->input('filter');
-        $search = $request->input('search');
+        public function index(Request $request)
+        {
+            $filter = $request->input('filter');
+            $search = $request->input('search');
 
-        $query = DB::table('advertisements');
+            $query = Advertisement::query();
 
-        if ($search) {
-            $query->where('title', 'like', "%$search%");
+            if ($search) {
+                $query->where('title', 'like', "%$search%");
+            }
+
+            if ($filter === 'price_asc') {
+                $query->orderBy('price', 'asc');
+            } elseif ($filter === 'price_desc') {
+                $query->orderBy('price', 'desc');
+            } elseif ($filter === 'name_asc') {
+                $query->orderBy('title', 'asc');
+            } elseif ($filter === 'name_desc') {
+                $query->orderBy('title', 'desc');
+            }
+
+            $advertisements = $query->with('file')->get();
+
+            return view('advertisements.index', [
+                'advertisements' => $advertisements,
+                'msg' => "All advertisements",
+            ]);
         }
 
-        if ($filter === 'price_asc') {
-            $query->orderBy('price', 'asc');
-        } elseif ($filter === 'price_desc') {
-            $query->orderBy('price', 'desc');
-        } elseif ($filter === 'name_asc') {
-            $query->orderBy('title', 'asc');
-        } elseif ($filter === 'name_desc') {
-            $query->orderBy('title', 'desc');
-        }
 
-        $advertisements = $query->get();
-
-        return view('advertisements.index', [
-            'advertisements' => $advertisements,
-            'msg' => "All advertisements",
-        ]);
-    }
     public function listByCategory($category_name)
     {
         $category = Category::where('name', $category_name)->first();
@@ -62,44 +64,48 @@ class AdvertisementController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'title' => 'required',
-            'price' => 'required',
-            'category_id' => 'required',
-            'description' => 'required',
-            'picture' => [
-                'image',
-                'max:100000', // Maximum file size of 2MB (2048 kilobytes)
-            ],
+{
+    $validatedData = $request->validate([
+        'title' => 'required',
+        'price' => 'required',
+        'category_id' => 'required',
+        'description' => 'required',
+        'picture' => [
+            'image',
+            'max:2048', // Maximum file size of 2MB (2048 kilobytes)
+        ],
+    ]);
+
+    $file = null; // Initialize the $file variable
+
+    if ($request->hasFile('picture')) {
+        $pic = $request->file('picture');
+        $path = $pic->store('public');
+        $path = str_replace('public/', '', $path); // Remove 'public/' from the path
+
+        $file = File::create([
+            'path' => $path,
+            'type' => $pic->getClientOriginalExtension(),
         ]);
-
-        $file = new File();
-        $file->type = $request->file('picture')->getClientOriginalExtension();
-        $file->path = $request->file('picture')->store('public/images/' . $file->id . '.' . $file->type);
-        $file->save();
-
-        // Resize and store the image
-        //$imagePath = storage_path('app/' . $file->path);
-        //$resizedImagePath = 'public/images/' . $file->id . '.' . $file->type;
-        //$image = Image::make($imagePath);
-        //$image->save(storage_path('app/' . $resizedImagePath));
-
-        $advertisement = Advertisement::create([
-            'title' => $validatedData['title'],
-            'price' => $validatedData['price'],
-            'category_id' => $validatedData['category_id'],
-            'description' => $validatedData['description'],
-            'seller_id' => Auth::id(),
-            'pic' => $file->id,
-        ]);
-
-        $user = User::find(Auth::id());
-        $user->increment('amountlisted');
-        $user->refresh();
-
-        return redirect()->route('advertisements.show', $advertisement->id);
     }
+
+    $advertisement = Advertisement::create([
+        'title' => $validatedData['title'],
+        'price' => $validatedData['price'],
+        'category_id' => $validatedData['category_id'],
+        'description' => $validatedData['description'],
+        'seller_id' => Auth::id(),
+        'pic' => $file ? $file->id : null, // Assign the value based on $file
+    ]);
+
+    $user = User::find(Auth::id());
+    $user->increment('amountlisted');
+    $user->refresh();
+    $advertisement->save();
+
+    return redirect()->route('advertisements.show', $advertisement->id);
+}
+
 
     public function dashboard()
     {
@@ -151,11 +157,24 @@ class AdvertisementController extends Controller
             'picture' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        $file = null; // Initialize the $file variable
+
+        if ($request->hasFile('picture')) {
+        $pic = $request->file('picture');
+        $path = $pic->store('public');
+        $path = str_replace('public/', '', $path); // Remove 'public/' from the path
+
+        $file = File::create([
+            'path' => $path,
+            'type' => $pic->getClientOriginalExtension(),
+        ]);
+    }
         // Update the advertisement with the new data
         $advertisement->title = $validatedData['title'];
         $advertisement->price = $validatedData['price'];
         $advertisement->category_id = $validatedData['category_id'];
         $advertisement->description = $validatedData['description'];
+        $advertisement->pic = $file ? $file->id : null;
 
         // Save the updated advertisement
         $advertisement->save();

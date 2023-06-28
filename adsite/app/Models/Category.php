@@ -9,10 +9,15 @@ class Category extends Model
 {
     use HasFactory;
 
-    public $fillable = ['name'];
+    public $fillable = ['name', 'pic'];
 
     public function advertisements()
     {
         return $this->hasMany(Advertisement::class);
+    }
+
+    public function file()
+    {
+        return $this->belongsTo(File::class, 'pic');
     }
 }
