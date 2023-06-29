@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\File;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
 
@@ -80,16 +81,12 @@ class AdminController extends Controller
         $user->is_banned = true;
         $user->save();
 
+        $userId = Auth::id();
+        $banned_id = $user->id;
+        $logMessage = "Admin with ID {$userId} performed BAN action on User with ID {$banned_id}";
+        Log::info($logMessage);
+
         return redirect()->route('admin.users')->with('success_message', "User \"$name \" was banned successfully!");
-    }
-
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function editUser(string $id)
-    {
-        //
     }
 
     /**

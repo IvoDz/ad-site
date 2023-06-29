@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Advertisement;
 use App\Models\Category;
 use App\Models\File;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 
@@ -19,6 +21,7 @@ class CategoryController extends Controller
     public function update(Request $request, int $id)
     {
         $cat = Category::findOrFail($id);
+        $catname = $cat->name;
 
         $validatedData = $request->validate([
             'name' => 'required',
@@ -42,6 +45,10 @@ class CategoryController extends Controller
         $cat->name = $validatedData['name'];
         $cat->save();
 
+        $userId = Auth::id();
+        $logMessage = "Admin with ID {$userId} performed UPDATE action on Category {$catname}";
+        Log::info($logMessage);
+
         return redirect()
             ->route('admin.categories')
             ->with('success_message', 'Category was edited successfully!');
@@ -63,10 +70,16 @@ class CategoryController extends Controller
             'name' => $validatedData['name'],
         ]);
 
+        $userId = Auth::id();
+        $logMessage = "Admin with ID {$userId} performed CREATE action on Category {$validatedData['name']}";
+        Log::info($logMessage);
+
         return redirect()
             ->route('admin.categories')
             ->with('success_message', 'Category was created successfully!');
     }
+
+
 
     public function create()
     {
@@ -77,10 +90,15 @@ class CategoryController extends Controller
     public function destroy($id)
 {
     $category = Category::findOrFail($id);
+    $catname = $category->name;
 
     Advertisement::where('category_id', $category->id)->delete();
 
     $category->delete();
+
+    $userId = Auth::id();
+    $logMessage = "Admin with ID {$userId} performed DELETE action on Category {$catname}";
+    Log::info($logMessage);
 
     return redirect()->route('admin.categories')->with('success_message', 'Category and associated advertisements were deleted successfully!');
 }

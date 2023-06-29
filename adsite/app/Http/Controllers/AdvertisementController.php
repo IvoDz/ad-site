@@ -7,10 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\File;
-use Illuminate\Validation\Rule;
-use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AdvertisementController extends Controller
 {
@@ -106,6 +103,11 @@ class AdvertisementController extends Controller
     $adCategory->refresh();
     $advertisement->save();
 
+    $userId = Auth::id();
+    $adid = $advertisement->id;
+    $logMessage = "User with ID {$userId} performed CREATE action on Ad with ID {$adid}";
+    Log::info($logMessage);
+
     return redirect()->route('advertisements.show', $advertisement->id);
 }
 
@@ -122,7 +124,7 @@ class AdvertisementController extends Controller
     {
         $ad = Advertisement::findOrFail($id);
         $seller = $ad->seller_id;
-
+        $adid = $ad->id;
         if ($seller !== auth()->id() && !auth()->user()->is_admin) {
             return response()->view('error.forbidden', [], 403);
         }
@@ -136,6 +138,11 @@ class AdvertisementController extends Controller
 
         $adCategory = Category::where('id', $ad->category_id)->firstOrFail();
         $adCategory->decrement('amount_of_listings');
+
+        $userId = Auth::id();
+
+        $logMessage = "User with ID {$userId} performed DELETE action on Ad with ID {$adid}";
+        Log::info($logMessage);
 
         if ($seller === auth()->id()) {
             return redirect()
@@ -190,9 +197,22 @@ class AdvertisementController extends Controller
         // Save the updated advertisement
         $advertisement->save();
 
-        return redirect()
-            ->route('dashboard')
-            ->with('success_message', "Ad \"$advertisement->title\" was edited successfully!");
+        $userId = Auth::id();
+        $adid = $advertisement->id;
+        $logMessage = "User with ID {$userId} performed UPDATE action on Ad with ID {$adid}";
+        Log::info($logMessage);
+
+        if ($advertisement->seller_id === auth()->id()) {
+            return redirect()
+                ->route('dashboard')
+                ->with('success_message', "Ad \"$advertisement->title\" was deleted successfully!");
+        }
+
+        if (auth()->user()->is_admin) {
+            return redirect()
+                ->route('admin.ads')
+                ->with('success_message', "Ad \"$advertisement->title\" was deleted successfully!");
+        }
     }
 
     public function edit(int $id)
