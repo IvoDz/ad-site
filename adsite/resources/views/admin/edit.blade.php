@@ -4,10 +4,8 @@
     <div class="container mx-auto mt-10">
         <h1 class="text-center text-4xl font-bold mb-6">{{__('messages.ren_cat')}} {{ $category->name }}</h1>
 
-        <form action="{{ route('admin.update', ['id' => $category->id]) }}" method="POST" class="max-w-md mx-auto">
+        <form action="{{ route('admin.update', ['id' => $category->id]) }}" method="POST" class="max-w-md mx-auto" enctype="multipart/form-data">
             @csrf
-            @method('POST')
-
             <div class="mb-6">
                 <label for="name" class="text-lg font-medium">{{__('messages.catname')}}</label>
                 <input type="text" name="name" id="name" value="{{ $category->name }}" required class="w-full border border-gray-300 px-4 py-2 rounded-md">

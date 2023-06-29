@@ -39,7 +39,7 @@ class AdvertisementController extends Controller
 
             return view('advertisements.index', [
                 'advertisements' => $advertisements,
-                'msg' => "All advertisements",
+                'msg' => __('messages.all_ads'),
             ]);
         }
 
@@ -100,7 +100,10 @@ class AdvertisementController extends Controller
 
     $user = User::find(Auth::id());
     $user->increment('amountlisted');
+    $adCategory = Category::where('id', $advertisement->category_id)->firstOrFail();
+    $adCategory->increment('amount_of_listings');
     $user->refresh();
+    $adCategory->refresh();
     $advertisement->save();
 
     return redirect()->route('advertisements.show', $advertisement->id);
@@ -131,6 +134,9 @@ class AdvertisementController extends Controller
         $user->decrement('amountlisted');
         $user->refresh();
 
+        $adCategory = Category::where('id', $ad->category_id)->firstOrFail();
+        $adCategory->decrement('amount_of_listings');
+
         if ($seller === auth()->id()) {
             return redirect()
                 ->route('dashboard')
@@ -147,7 +153,6 @@ class AdvertisementController extends Controller
     public function update(Request $request, int $id)
     {
         $advertisement = Advertisement::findOrFail($id);
-
         // Validate the form data
         $validatedData = $request->validate([
             'title' => 'required',
@@ -157,6 +162,12 @@ class AdvertisementController extends Controller
             'picture' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        if ($advertisement->category_id !== $validatedData['category_id']){
+            $catbefore = Category::where('id', $advertisement->category_id)->firstOrFail();
+            $catnow =  Category::where('id', $validatedData['category_id'])->firstOrFail();
+            $catbefore->decrement('amount_of_listings');
+            $catnow->increment('amount_of_listings');
+        }
         $file = null; // Initialize the $file variable
 
         if ($request->hasFile('picture')) {
@@ -193,6 +204,7 @@ class AdvertisementController extends Controller
         }
         $categories = Category::all();
         $adCategory = Category::where('id', $advertisement->category_id)->firstOrFail();
+
         return view('advertisements.edit', ['advertisement' => $advertisement, 'categories' => $categories, 'categoryname' => $adCategory]);
     }
 }

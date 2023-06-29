@@ -25,17 +25,18 @@ class CategoryController extends Controller
             'picture' => 'image|max:2048',
         ]);
 
-        $file = null; // Initialize the $file variable
+        $file = null;
 
-        if ($request->hasFile('picture'))
-        $pic = $request->file('picture');
-        $path = $pic->store('public');
-        $path = str_replace('public/', '', $path);
+        if ($request->hasFile('picture')) {
+            $pic = $request->file('picture');
+            $path = $pic->store('public');
+            $path = str_replace('public/', '', $path);
 
-        $file = File::create([
-            'path' => $path,
-            'type' => $pic->getClientOriginalExtension(),
-        ]);
+            $file = File::create([
+                'path' => $path,
+                'type' => $pic->getClientOriginalExtension(),
+            ]);
+        }
 
         $cat->pic = $file ? $file->id : null;
         $cat->name = $validatedData['name'];

@@ -13,12 +13,9 @@
         @else
         <img class="w-12 h-12" src="{{ asset('storage/no-photo.png') }}" alt="Default Profile Picture">
         @endif
-
-            <!-- Display other advertisement details -->
             <p class="text-lg mt-4">{{__('messages.desc')}} : {{ $advertisement->description }}</p>
-
-            <!-- Display additional details as needed -->
             <p class="text-lg mt-4">{{__('messages.seller')}} {{ $advertisement->seller->name }}</p>
+            <p class="text-lg mt-4">{{__('messages.email')}} <a href="mailto:{{ $advertisement->seller->email}}">{{ $advertisement->seller->email}}</a></p>
         </div>
     </div>
 

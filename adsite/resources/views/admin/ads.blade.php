@@ -35,10 +35,12 @@
                 </div>
 
                 <div class="flex justify-end mt-4">
-                    <a href="{{ route('advertisements.edit', ['id' => $advertisement->id]) }}" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                        onclick="return confirm('{{__('messages.ad_con_edit')}}')">{{__('messages.edit')}}</a>
-                    <a href="{{ route('advertisements.destroy', ['id' => $advertisement->id]) }}" class="ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                        onclick="return confirm('{{__('messages.ad_con_del')}}')">{{__('messages.del')}}</a>
+                    <form id="delete-ad-form-{{ $advertisement->id }}" action="{{ route('advertisements.destroy', ['id' => $advertisement->id]) }}" method="POST" style="display: none;">
+                        @csrf
+                        @method('DELETE')
+                    </form>
+                    <a href="{{ route('advertisements.edit', ['id' => $advertisement->id]) }}" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600" onclick="return confirm('{{__('messages.ad_con_edit')}}')">{{__('messages.edit')}}</a>
+                    <a href="{{ route('advertisements.destroy', ['id' => $advertisement->id]) }}" class="ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600" onclick="event.preventDefault(); if (confirm('{{__('messages.ad_con_del')}}')) document.getElementById('delete-ad-form-{{ $advertisement->id }}').submit();">{{__('messages.del')}}</a>
                 </div>
             </div>
         @endforeach
