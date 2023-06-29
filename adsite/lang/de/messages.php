@@ -59,4 +59,12 @@ return [
     'h-l' => 'Preis (Höchster zu Niedrigster)',
     'apply' => 'Filter anwenden',
     'edit_profile' => 'Profil bearbeiten',
+    'all_ads' => 'Alle Anzeigen',
+    'forget' => 'Passwort vergessen?',
+    'rem' => 'Angemeldet bleiben',
+    'email' => 'E-Mail',
+    'pwd' => 'Passwort',
+    'profpic' => 'Profilbild',
+    'c_pwd' => 'Passwort bestätigen',
+    'name' => 'Name',
 ];

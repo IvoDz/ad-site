@@ -59,8 +59,12 @@ return [
     'h-l' => 'Price (High to Low)',
     'apply' => 'Apply Filter',
     'edit_profile' => 'Edit profile',
-
-
-
-
+    'all_ads' => 'All advertisements',
+    'forget' => "Forgot Your Password?",
+    'rem' => 'Remember Me',
+    'email' => 'Email',
+    'pwd' => 'Password',
+    'profpic' => 'Profile Picture',
+    'c_pwd' => 'Confirm Password',
+    'name' => 'Name'
 ];

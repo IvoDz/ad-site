@@ -59,4 +59,12 @@ return [
     'h-l' => 'Cena (Augstāka uz Zemāku)',
     'apply' => 'Pielietot filtru',
     'edit_profile' => 'Rediģēt kontu',
+    'all_ads' => 'Visi sludinājumi',
+    'forget' => 'Aizmirsi paroli?',
+    'rem' => 'Atcerēties mani',
+    'email' => 'E-pasts',
+    'pwd' => 'Parole',
+    'profpic' => 'Profila attēls',
+    'c_pwd' => 'Apstipriniet paroli',
+    'name' => 'Vārds',
 ];
