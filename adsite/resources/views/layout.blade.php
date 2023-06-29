@@ -24,11 +24,10 @@
 </head>
 <body >
     <nav class="sticky top-0 flex justify-between items-center mb-6 bg-stone-200">
-        <a href="/" class="flex items-center"> <!-- Updated: Added "flex", "items-center", "space-x-2", and "ml-4" classes -->
-            <img src="{{ asset('storage/logo.png') }}" alt="Logo" class="w-16 h-16"> <!-- Updated: Added "w-8" and "h-8" classes -->
-        </a>
+        <a href="/" class="flex items-center">
+            <img src="{{ asset('storage/logo.png') }}" alt="Logo" class="w-16 h-16">
 
-        <ul class="flex space-x-6 mr-auto text-lg pl-3"> <!-- Updated: Added "mr-auto" class -->
+        <ul class="flex space-x-6 mr-auto text-lg pl-3">
             @guest
                 <li>
                     <a href="{{ route('register') }}" class="hover:text-laravel px-4">

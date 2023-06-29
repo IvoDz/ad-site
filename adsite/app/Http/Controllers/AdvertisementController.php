@@ -73,12 +73,12 @@ class AdvertisementController extends Controller
         ],
     ]);
 
-    $file = null; // Initialize the $file variable
+    $file = null;
 
     if ($request->hasFile('picture')) {
         $pic = $request->file('picture');
         $path = $pic->store('public');
-        $path = str_replace('public/', '', $path); // Remove 'public/' from the path
+        $path = str_replace('public/', '', $path);
 
         $file = File::create([
             'path' => $path,
@@ -92,7 +92,7 @@ class AdvertisementController extends Controller
         'category_id' => $validatedData['category_id'],
         'description' => $validatedData['description'],
         'seller_id' => Auth::id(),
-        'pic' => $file ? $file->id : null, // Assign the value based on $file
+        'pic' => $file ? $file->id : null,
     ]);
 
     $user = User::find(Auth::id());
@@ -175,26 +175,24 @@ class AdvertisementController extends Controller
             $catbefore->decrement('amount_of_listings');
             $catnow->increment('amount_of_listings');
         }
-        $file = null; // Initialize the $file variable
+        $file = null;
 
         if ($request->hasFile('picture')) {
         $pic = $request->file('picture');
         $path = $pic->store('public');
-        $path = str_replace('public/', '', $path); // Remove 'public/' from the path
+        $path = str_replace('public/', '', $path);
 
         $file = File::create([
             'path' => $path,
             'type' => $pic->getClientOriginalExtension(),
         ]);
     }
-        // Update the advertisement with the new data
         $advertisement->title = $validatedData['title'];
         $advertisement->price = $validatedData['price'];
         $advertisement->category_id = $validatedData['category_id'];
         $advertisement->description = $validatedData['description'];
         $advertisement->pic = $file ? $file->id : null;
 
-        // Save the updated advertisement
         $advertisement->save();
 
         $userId = Auth::id();

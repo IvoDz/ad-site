@@ -5,12 +5,12 @@
 <style>
     .category-item {
         transition: transform 0.3s, filter 0.3s;
-        filter: brightness(0.8); /* Darken the div by default */
+        filter: brightness(0.8); 
     }
 
     .category-item:hover {
-        transform: scale(1.05); /* Apply scale transform on hover for an animated effect */
-        filter: brightness(1); /* Brighten the div on hover */
+        transform: scale(1.05);
+        filter: brightness(1);
     }
 
     .category-item a {
@@ -25,12 +25,12 @@
         border-radius: 0.5rem;
         margin-top: 1rem;
         text-align: center;
-        opacity: 0.8; /* Adjust the opacity to your preference */
+        opacity: 0.8;
         transition: opacity 0.3s;
     }
 
     .category-item:hover h3 {
-        opacity: 1; /* Make the text fully visible on hover */
+        opacity: 1;
     }
 </style>
 

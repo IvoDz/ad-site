@@ -5,17 +5,13 @@ use App\Models\Advertisement;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Models\File;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function indexUsers(Request $request)
 {
     $search = $request->input('search');
@@ -30,9 +26,7 @@ class AdminController extends Controller
 
     return view('admin.users', compact('users'));
 }
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function indexAds(Request $request)
     {
         $filter = $request->input('filter');
@@ -62,18 +56,12 @@ class AdminController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function indexCategories()
     {
         $categories = Category::all();
         return view('admin.categories', ['categories' => $categories]);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function banUser(int $id)
     {
         $user = User::where('id', $id)->firstOrFail();
@@ -103,9 +91,6 @@ class AdminController extends Controller
         return redirect()->route('admin.users')->with('success_message', "User \"$name \" was unbanned successfully!");
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function indexUserAds(int $id)
     {
         $user = User::where('id', $id)->firstOrFail();
@@ -113,11 +98,4 @@ class AdminController extends Controller
         return view('admin.userads', ['advertisements' => $advertisements, 'msg' => "All listings by " . $user->name]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }
