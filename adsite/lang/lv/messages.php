@@ -67,4 +67,5 @@ return [
     'profpic' => 'Profila attēls',
     'c_pwd' => 'Apstipriniet paroli',
     'name' => 'Vārds',
+    'unban' => 'Atbloķēt',
 ];

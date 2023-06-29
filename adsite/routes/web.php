@@ -27,6 +27,7 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::get('/users', [AdminController::class, 'indexUsers'])->name('admin.users');
     Route::get('/users/search', [AdminController::class, 'searchUsers'])->name('admin.users.search');
     Route::get('/users/{id}/ban', [AdminController::class, 'banUser'])->name('admin.userban');
+    Route::get('/users/{id}/unban', [AdminController::class, 'unbanUser'])->name('admin.userunban');
     Route::get('users/{id}/ads', [AdminController::class, 'indexUserAds'])->name('admin.userads');
     Route::get('/category/{id}/edit', [CategoryController::class, 'edit'])->name('admin.edit');
     Route::post('/category/{id}', [CategoryController::class, 'update'])->name('admin.update');

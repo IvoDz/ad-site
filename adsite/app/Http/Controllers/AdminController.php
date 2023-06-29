@@ -89,6 +89,20 @@ class AdminController extends Controller
         return redirect()->route('admin.users')->with('success_message', "User \"$name \" was banned successfully!");
     }
 
+    public function unbanUser(int $id){
+        $user = User::where('id', $id)->firstOrFail();
+        $name = $user->name;
+        $user->is_banned = false;
+        $user->save();
+
+        $userId = Auth::id();
+        $banned_id = $user->id;
+        $logMessage = "Admin with ID {$userId} performed UNBAN action on User with ID {$banned_id}";
+        Log::info($logMessage);
+
+        return redirect()->route('admin.users')->with('success_message', "User \"$name \" was unbanned successfully!");
+    }
+
     /**
      * Update the specified resource in storage.
      */

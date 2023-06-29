@@ -13,11 +13,15 @@
                 <div class="text-xl font-bold mb-4">{{ $advertisement->price }}</div>
             </div>
 
-            @if ($advertisement->pic)
-                <img class="w-48 ml-auto md:block" src="{{ asset('storage/images/' . $advertisement->pic . '.' . $advertisement->file->type) }}" alt="Advertisement Picture">
-            @else
-                <img class="w-48 ml-auto md:block" src="{{ asset('images/logo.png') }}" alt="Placeholder Image">
-            @endif
+            <div class="flex items-center justify-end">
+                @if ($advertisement->pic)
+                <div class="w-32 h-32 rounded-lg overflow-hidden">
+                    <img src="{{ asset('storage/' . $advertisement->file->path) }}" alt="Ad Pic" class="object-contain w-full h-full">
+                </div>
+                @else
+                <img class="w-12 h-12" src="{{ asset('storage/no-photo.png') }}" alt="Default Ad Pic">
+                @endif
+            </div>
 
         </div>
         @endforeach

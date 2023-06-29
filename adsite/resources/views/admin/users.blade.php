@@ -32,12 +32,19 @@
                 </div>
                 <div class="flex">
                     @if (!$user->is_admin)
-                    <form action="{{route('admin.userban' ,  ['id' => $user->id])}}" method="GET">
-                        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">{{__('messages.ban')}}</button>
-                    </form>
+                        @if (!$user->is_banned)
+                            <form action="{{ route('admin.userban', ['id' => $user->id]) }}" method="GET">
+                                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">{{ __('messages.ban') }}</button>
+                            </form>
+                        @else
+                            <form action="{{ route('admin.userunban', ['id' => $user->id]) }}" method="GET">
+                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">{{ __('messages.unban') }}</button>
+                            </form>
+                        @endif
+                        <a href="{{ route('admin.userads', ['id' => $user->id]) }}" class="bg-green-500 text-white px-4 py-2 rounded ml-4 hover:bg-green-600">{{ __('messages.view_lis') }}</a>
                     @endif
-                    <a href="{{route('admin.userads' ,  ['id' => $user->id])}}" class="bg-green-500 text-white px-4 py-2 rounded ml-4 hover:bg-green-600">{{__('messages.view_lis')}}</a>
                 </div>
+
             </div>
         @endforeach
     </div>

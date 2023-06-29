@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Log;
 
 
 
@@ -58,6 +59,10 @@ class RegisteredUserController extends Controller
 
             $user->profile_pic = $file->id;
             $user->save();
+
+            $userId = $user->id;
+            $logMessage = "New user with ID {$userId} REGISTERED";
+            Log::info($logMessage);
         }
 
         event(new Registered($user));

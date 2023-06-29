@@ -67,4 +67,5 @@ return [
     'profpic' => 'Profilbild',
     'c_pwd' => 'Passwort bestätigen',
     'name' => 'Name',
+    'unban' => 'Entsperren'
 ];

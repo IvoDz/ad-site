@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Log;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -29,6 +30,10 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        $userId = Auth::id();
+        $logMessage = "User with ID {$userId} LOGGED IN";
+        Log::info($logMessage);
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
@@ -37,11 +42,17 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+
+        $userId = Auth::id();
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
+
+        $logMessage = "User with ID {$userId} LOGGED OUT";
+        Log::info($logMessage);
 
         return redirect('/');
     }

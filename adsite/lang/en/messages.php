@@ -66,5 +66,6 @@ return [
     'pwd' => 'Password',
     'profpic' => 'Profile Picture',
     'c_pwd' => 'Confirm Password',
-    'name' => 'Name'
+    'name' => 'Name',
+    'unban' => 'Unban user',
 ];
